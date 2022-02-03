@@ -15,12 +15,14 @@
 <!-- <script type='module' src="js/DoughnutGraph.js"></script> -->
 <script type='module' src="js/count_tracker_static.js"></script>
 <script type='module' src="js/number_obs_to_date_compare_previous.js"></script>
+<script type='module' src="js/indentified_obs_to_date_compare_previous.js"></script>
+<script type='module' src="js/iconic_taxa_tracker.js"></script>
+
 <!--<script type='module' src="js/iNat_api_calls.js"></script> -->
 <!-- <script type="module" src="js/trial.js"></script> -->
 <!-- Create a div where the graph will take place -->
 
 </head>
-
 <body>
 <h1 align="center">Vermont Atlas of Life </h1>
 <div class="container">
@@ -29,10 +31,16 @@
     <div id="weeklyLineGraph"></div>
   </div>
   <div class="col-xs-6 col-lg-4">
+    <div id="identified_previous"></div>
+  </div>
+  <div class="col-xs-6 col-lg-4">
     <div id="obsDoughnut"></div>
   </div>
 </div>
 <div class="row">
+      <select class="selectpicker" id="iconicSelection">Select Taxon:</select>
+      <div id="iconictaxaDonut"></div>
+</div>
   </div>
 </div>
 </body>
