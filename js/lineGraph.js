@@ -63,7 +63,33 @@ var weeklyData = {
       "52": 1857,
       "53": 580
     }
-    
+
+
+let timeScale = d3.scaleTime()
+                 .domain([new Date('2013-01-01').toLocaleString(),
+                          new Date('2013-12-01').toLocaleString()])
+                 .range([0,12]);
+
+console.log(timeScale(3));
+
+// Empty data array
+    var histoData = '';
+    // apicall
+    const fetchPromise = await fetch("https://api.inaturalist.org/v1/observations/histogram?place_id=47&d1=2013-01-01&d2=2021-12-31&date_field=observed&interval=month")
+        .then( res => res.json())
+        .then(response => {
+            var data = (response.results);
+            histoData = data.month;
+        });
+    //resolve the promise then print
+    Promise.resolve(fetchPromise) // Waits for fetchPromise to get its value
+        .then(() => console.log(histoData))
+        .then(() => console.log(`names: ${Object.keys(histoData)}`))
+        .then(createLineGraph({dataJson : histoData,
+                               htmlID : "weeklyLineGraph",
+                               lineColor : "forestgreen"}))
+
+
   //Read the data
   /* dataJson = data returned from iNat API;
    * interval = interval used in iNat API call -
@@ -100,19 +126,27 @@ function createLineGraph({dataJson,
 //  NEED A SWITCH ABILITY HERE IN JAVASCRIPT TO DO DIFFERENT THINGS BASED ON
 //  interval value
 var nX = Object.keys(dataJson).length;
+var nNames = Object.keys(dataJson);
 
   var cData = []
-  for(let i = 1; i <= nX; i++){
-    cData.push({x: i,
-                count: dataJson[i]})
+  //for(let i = 1; i <= nX; i++){
+  for (var key of nNames) {
+    cData.push({x: key,
+                count: dataJson[key]})
   }
-
   var wTots = cData.slice(0,nX-1)
   var newData = wTots.reduce((obj, item) => Object.assign(obj, { [item.x]: item.count }), {});
 
   let yVals = Object.values(newData);
-  console.log(Math.max.apply(null,yVals))
-  console.log(wTots.length)
+  let xVals = Object.keys(newData);
+  console.log(`extent: ${d3.extent(xVals)}`)
+  console.log(`xVals[0]: ${xVals[0]}`)
+  console.log(`newData values: ${Object.keys(newData)}`)
+  //console.log(Math.max.apply(null,yVals))
+  //console.log(`wTots length: ${wTots.length}`)
+  console.log(`wTots: ${Object.entries(wTots)}`)
+  //console.log(`newData: ${Object.keys(newData)}`)
+
   // set the dimensions and margins of the graph
   //var margin = {top: 10, right: 30, bottom: 30, left: 60},
   //    width = 460 - margin.left - margin.right,
@@ -132,6 +166,7 @@ var nX = Object.keys(dataJson).length;
     // Add X axis --> it is a date format
     var x = d3.scaleLinear()
       .domain([1,wTots.length])
+      //.domain(d3.extent(xVals))
       .range([ 0, width ]);
     svg.append("g")
       .attr("transform", "translate(0," + height + ")")
@@ -148,7 +183,7 @@ var nX = Object.keys(dataJson).length;
       svg.append("text")
          .attr("class", "x label")
          .attr("text-anchor", "middle")
-         .attr("x", x(wTots.length/2))
+         .attr("x", x(wTots.x))
          .attr("y", height + 30)
          .text(xLabel);
 
@@ -198,12 +233,12 @@ var nX = Object.keys(dataJson).length;
 
     // Add the line
   svg.append("path")
-    .datum(wTots)
+    .datum(newData)
     .attr("fill", "none")
     .attr("stroke", lineColor)
     .attr("stroke-width", lineWidth)
     .attr("d", d3.line()
-      .x(function(d) { return x(d.x) })
+      .x(function(d) { return x(Object.keys(d)) })
       .y(function(d) { return y(d.count) })
       )
 
@@ -258,7 +293,7 @@ var nX = Object.keys(dataJson).length;
     }
   };
 
-  createLineGraph({dataJson : weeklyData,
-                   htmlID : "weeklyLineGraph",
-                   lineColor: "forestgreen",
-                   margin : {top: 10, left: 60, right: 65, bottom: 50}});
+  //createLineGraph({dataJson : histoData.month,
+  //                 htmlID : "weeklyLineGraph",
+  //                 lineColor: "forestgreen",
+  //                 margin : {top: 10, left: 60, right: 65, bottom: 50}});

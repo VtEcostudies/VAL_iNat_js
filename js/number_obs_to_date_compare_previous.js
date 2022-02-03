@@ -56,15 +56,15 @@ Promise.all([fetch(currentAPI),
            return cumObsThisYear[i] = a+b; },0);
 
         thisDay = Object.keys(day[0])
-        console.log(`thisdaya here: ${Object.keys(day[0])[0]}`)
+      //  console.log(`thisdaya here: ${Object.keys(day[0])[0]}`)
 
         thisOrdDay = thisDay.map(function(d){
           var now = new Date(d);
           var add5 = new Date(now.getTime() + (5*60*60*1000))
-          console.log(`pastYear now: ${now}`)
-          console.log(`pastYear add5: ${add5}`)
+        //  console.log(`pastYear now: ${now}`)
+        //  console.log(`pastYear add5: ${add5}`)
           var day = add5.getDOY();
-          console.log(`pastYearday: ${day}`)
+        //  console.log(`pastYearday: ${day}`)
           return(day)
         })
     // previous year
@@ -76,19 +76,19 @@ Promise.all([fetch(currentAPI),
         pastOrdDay = pastDay.map(function(d){
           var now = new Date(d);
           var add5 = new Date(now.getTime() + (5*60*60*1000))
-          console.log(`pastYear now: ${now}`)
-          console.log(`pastYear add5: ${add5}`)
+        //  console.log(`pastYear now: ${now}`)
+        //  console.log(`pastYear add5: ${add5}`)
           var day = add5.getDOY();
-          console.log(`pastYearday: ${day}`)
+        //  console.log(`pastYearday: ${day}`)
           return(day)
         })
-   console.log(`data2: ${Object.values(day[0])}`);
+   //console.log(`data2: ${Object.values(day[0])}`);
    //console.log(`this year: ${thisYear}`);
-   console.log(`this day: ${thisOrdDay}`)
-   console.log(`cumObs: ${cumObsThisYear}`)
-   console.log(`past year: ${pastYear}`);
-   console.log(`past day: ${pastDay}`)
-   console.log(`past ord: ${pastOrdDay}`)
+   //console.log(`this day: ${thisOrdDay}`)
+   //console.log(`cumObs: ${cumObsThisYear}`)
+   //console.log(`past year: ${pastYear}`);
+   //console.log(`past day: ${pastDay}`)
+   //console.log(`past ord: ${pastOrdDay}`)
               })
         .then(function(){
         //  interval value
@@ -149,7 +149,7 @@ Promise.all([fetch(currentAPI),
               svg.append("text")
                  .attr("class", "x label")
                  .attr("text-anchor", "middle")
-                 .attr("x", x(thisOrdDay))
+                 .attr("x", x(Math.floor(Math.max.apply(null,xVals)/2)))
                  .attr("y", height + 30)
                  .text("Ordinal Day");
 
@@ -205,8 +205,8 @@ Promise.all([fetch(currentAPI),
                   }
     var thisData = thisYearData.reduce((obj, item) => Object.assign(obj, { [item.x]: item.count }), {});
 
-    console.log(`thisdata: ${Object.values(thisData)}`)
-    console.log(`thisdataKeys: ${Object.keys(thisData)}`)
+    //console.log(`thisdata: ${Object.values(thisData)}`)
+    //console.log(`thisdataKeys: ${Object.keys(thisData)}`)
 
             // Add the line
           svg.append("path")
