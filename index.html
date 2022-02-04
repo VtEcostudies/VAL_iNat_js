@@ -17,10 +17,27 @@
 <script type='module' src="js/number_obs_to_date_compare_previous.js"></script>
 <script type='module' src="js/indentified_obs_to_date_compare_previous.js"></script>
 <script type='module' src="js/iconic_taxa_tracker.js"></script>
+<script type='module' src="js/taxon_breakdown.js"></script>
 
 <!--<script type='module' src="js/iNat_api_calls.js"></script> -->
 <!-- <script type="module" src="js/trial.js"></script> -->
 <!-- Create a div where the graph will take place -->
+<style>
+.tooltip {                                                        /* NEW */
+        background: #eee;                                               /* NEW */
+        box-shadow: 0 0 5px #999999;                                    /* NEW */
+        color: #333;                                                    /* NEW */
+        display: none;                                                  /* NEW */
+        font-size: 12px;                                                /* NEW */
+        left: 130px;                                                    /* NEW */
+        padding: 3px;                                                  /* NEW */
+        position: absolute;                                             /* NEW */
+        text-align: center;                                             /* NEW */
+        top: 95px;                                                      /* NEW */
+        width: 80px;                                                    /* NEW */
+        z-index: 10;                                                    /* NEW */
+      }
+</style>
 
 </head>
 <body>
@@ -38,11 +55,18 @@
   </div>
 </div>
 <div class="row">
-      <select class="selectpicker" id="iconicSelection">Select Taxon:</select>
+  <div class="col-xs-6 col-lg-4">
+    <div id="speciesBreakdown"></div>
+    </div>
+  </div>
+    <p> Select Taxon: </p>
+      <select class="selectpicker"
+              id="iconicSelection"
+              data-header="Select Iconic Taxon">
+      </select>
       <div id="iconictaxaDonut"></div>
 </div>
   </div>
-</div>
 </body>
 
 </html>
