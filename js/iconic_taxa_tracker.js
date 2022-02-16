@@ -26,7 +26,9 @@
                      "Plantae",
                      "Protozoa"];
 
-var iconicTaxonArray =[{"text"  : "Amphibians",
+var iconicTaxonArray =[{"text" : "Select iconic taxon:",
+                        "value" : "Aves"},
+                     {"text"  : "Amphibians",
                         "value" : "Amphibia"},
                      {"text"     : "Spiders & Allies",
                        "value"    : "Arachnida"},
@@ -45,6 +47,7 @@ var iconicTaxonArray =[{"text"  : "Amphibians",
                        "value" : "Reptilia"},
                      {"text"  : "Plants",
                        "value" : "Plantae"}]
+
 var iconicSelectBox = document.getElementById('iconicSelection');
           //console.log(`selected value: ${iconicSelectBox.value}`)
     for(var i = 0, l = iconicTaxonArray.length; i < l; i++){
@@ -52,12 +55,26 @@ var iconicSelectBox = document.getElementById('iconicSelection');
         iconicSelectBox.options.add( new Option(option.text, option.value, option.selected) );
             }
 
+var selectedTaxa = "Aves";
+var selectedLabel = "Birds"
+
+console.log(`selected taxa: ${selectedTaxa}`);
+
+//document.getElementById("currentTaxa").innerHTML = selectedTaxa;
+
+drawIconicDonut();
+
 document.getElementById("iconicSelection").addEventListener("change", function() {
   var taxonSelect = document.getElementById("iconicSelection");
-  var selectedTaxa = taxonSelect.options[taxonSelect.selectedIndex].value;
-
+  selectedTaxa = taxonSelect.options[taxonSelect.selectedIndex].value;
+  selectedLabel = taxonSelect.options[taxonSelect.selectedIndex].text;
 console.log(`selected taxa: ${selectedTaxa}`)
 
+d3.select("iconictaxaDonut").remove()
+drawIconicDonut();
+})
+
+function drawIconicDonut() {
 //function sleep(ms) {
 //    return new Promise(resolve => setTimeout(resolve, ms));}
 
@@ -121,14 +138,12 @@ Promise.all([fetch(qTotalObs),
                 })
         .then(function(){makeDoughNut({exportData: exportData,
                             export_OBS: export_OBS,
-                            htmlID: "iconictaxaDonut"})}
-
-        )
-.catch(function (error) {
+                            htmlID: "iconictaxaDonut"})})
+        .catch(function (error) {
 	// if there's an error, log it
 	console.log(error);
 });
-});
+}
 
 function makeDoughNut({exportData=TOOLS,
                        export_OBS=TOOLS,
@@ -206,6 +221,14 @@ function makeDoughNut({exportData=TOOLS,
          .attr('font-size', '2em')
          .attr('y', -40)
          .text(`Species:`);
+
+     /* add text to center of the donut plot */
+         svg.append("text")
+            .attr("x", 0)
+            .attr("y", -150)
+            .attr("text-anchor", "middle")
+            .style("font-size", "4em")
+            .text(selectedLabel);
 
       // Add one dot in the legend for each name.
       svg.selectAll("mydots")

@@ -4,11 +4,12 @@ var yr1first = '&d1=2022-01-01';
 var yr0first = '&d1=2021-01-01';
 var yr1 = '&year=2022';
 var yr0 = '&year=2021';
+var yr0last = '&d2=2021-12-31';
 var tail = '&date_field=observed&interval=day'
 
 // API strings
 var currentAPI = baseUrl+project+yr1+yr1first+tail
-var pastAPI = baseUrl+project+yr0+yr0first+tail
+var pastAPI = baseUrl+project+yr0+yr0first+yr0last+tail
 
 var thisYear = [];
 var thisDay = [];

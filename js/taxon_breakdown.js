@@ -164,7 +164,7 @@ function makeSppBreakdownDoughNut({exportData=TOOLS,
 
       var tooltip = d3.select("#" + htmlID)
                       .append('div')
-                      .attr('class', 'tooltip');
+                      .attr('class', 'activeTOOL');
 
            tooltip.append('div')
                   .attr('class', 'label')
@@ -223,8 +223,16 @@ function makeSppBreakdownDoughNut({exportData=TOOLS,
 
           // OPTIONAL
           pathEnter.on('mousemove', function(d) {                            // NEW
-            tooltip.style('top', (d3.event.pageY + 10) + 'px')          // NEW
-                   .style('left', (d3.event.pageX + 10) + 'px');             // NEW
+          //  tooltip.style('top', (d3.event.pageY - 10) + 'px')          // NEW
+          //         .style('left', (d3.event.pageX - 10) + 'px');
+          // tooltip.style("top", (d3.event.pageY - 100) + "px")
+          //       .style("left", (d3.event.pageX - 100) + "px");             // NEW
+          //tooltip.style("top", d3.select(this).attr("cy") + "px");
+          //tooltip.style("left", d3.select(this).attr("cx") + "px")
+          let pos = d3.select(this).node().getBoundingClientRect();
+         d3.select('#'+htmlID)
+              .style('left', `${pos['x']}px`)
+              .style('top', `${(window.pageYOffset  + pos['y'] - 100)}px`);
           });                                                           // NEW
       /* add text to center of the donut plot */
           svg.append("text")

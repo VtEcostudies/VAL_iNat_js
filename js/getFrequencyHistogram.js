@@ -29,6 +29,12 @@
                        "Plantae",
                        "Protozoa"];
 
+// basis of new selector //
+  d3.csv('https://raw.githubusercontent.com/VtEcostudies/VAL_iNat_js/main/data/GBIF_species_flat.csv',
+        function(data){
+          console.log(`GITDATA: ${JSON.stringify(data)}`)
+        });
+
   var selectPhenologyArray =[{"text" : "Select taxon:",
                           "value" : "Alces alces",
                           "selected": true},
@@ -160,7 +166,6 @@ for (var key of pv) {
 
 console.log(`phenoData: ${phenoData}`)
 console.log(`Total species obs: ${total_spp_obs}`);
-console.log(`phenoProcData: ${phenoProcData.mon}`);
 
 var wkProbData = phenoProcData.reduce((obj, item) => Object.assign(obj, { [item.wk]: item.prob }), {});
 
@@ -188,11 +193,11 @@ var x = d3.scaleBand()
           //.padding(0.01);
 svg.append("g")
    .attr("transform", "translate(0," + height + ")")
-   .call(d3.axisBottom(x))
-  .selectAll("text")
-    .attr("transform", "translate(+2,0)")
-    .style("text-anchor", "middle")
-    .style("font-size", "0.6em");
+   //.call(d3.axisBottom(x))
+  //.selectAll("text")
+  //  .attr("transform", "translate(+2,0)")
+  //  .style("text-anchor", "middle")
+  //  .style("font-size", "0.6em");
 
 // Add Y axis
 var y = d3.scaleLinear()
@@ -202,61 +207,39 @@ var y = d3.scaleLinear()
 //  .call(d3.axisLeft(y));
 svg.append("polygon")
    .attr("points", x(1)+","+y(0.1)+" "+x(53)+","+y(0.1)+" "+x(53)+","+y(0.08)+" "+x(1)+","+y(0.08))
-   .style("fill", ";ightblue")
+   .style("fill", "lightblue")
    .style("stroke", "black")
    .style("strokeWidth", "10px")
-// Jan
-/* svg.append("polygon")
-   .attr("points", x(1)+","+y(0.1)+" "+x(5)+","+y(0.1)+" "+x(5)+","+y(0.08)+" "+x(1)+","+y(0.08))
-   .style("fill", "purple")
-   .style("stroke", "black")
-   .style("strokeWidth", "10px")
-//Feb
-svg.append("polygon")
-      .attr("points", x(5)+","+y(0.1)+" "+x(9)+","+y(0.1)+" "+x(9)+","+y(0.08)+" "+x(5)+","+y(0.08))
-      .style("fill", "blue")
-      .style("stroke", "black")
-      .style("strokeWidth", "10px")
-//Mar
-svg.append("polygon")
-            .attr("points", x(9)+","+y(0.1)+" "+x(14)+","+y(0.1)+" "+x(14)+","+y(0.08)+" "+x(9)+","+y(0.08))
-            .style("fill", "green")
-            .style("stroke", "black")
-            .style("strokeWidth", "10px")
-//Mar
-svg.append("polygon")
-    .attr("points", x(14)+","+y(0.1)+" "+x(18)+","+y(0.1)+" "+x(18)+","+y(0.08)+" "+x(14)+","+y(0.08))
-    .style("fill", "green")
-    .style("stroke", "black")
-    .style("strokeWidth", "10px")
-    */
-// var monLabs = {label: ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
-//               x: [2.5,6,10.5,14.5,18.5,22.5,26.5,30.5,34.5,38.5,42.5,44.5]}
- var monLabs = {"Jan" : 3,
-                "Feb" : 6,
-                "Mar" : 11,
-                "Apr" : 15,
-                "May" : 19,
-                "Jun" : 23,
-                "Jul" : 27,
-                "Aug" : 31,
-                "Sep" : 35,
-                "Oct" : 39,
-                "Nov" : 43,
-                "Dec" : 45}
 
+ var monLabs = {label: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+               x: [2, 6,10,14,18,22,26,30,34,38,42,44]}
 
-console.log(monLabs.keys)
+//var yLabLocs = [0.09,0.09,0.09,0.09,0.09,0.09,0.09,0.09,0.09,0.09,0.09,0.09]
+//var xLabLocs = [1,5,9,13,17,21,25,29,33,37,41,43]
+var xLabs = [{"month":"Jan", xlab: 1, ylab: 0.09},
+            {"month":"Feb",xlab: 5, ylab: 0.09},
+            {"month":"Mar",xlab: 9, ylab: 0.09},
+            {"month":"Apr",xlab: 13, ylab: 0.09},
+            {"month":"May",xlab: 17, ylab: 0.09},
+            {"month":"Jun",xlab: 21, ylab: 0.09},
+            {"month":"Jul",xlab: 25, ylab: 0.09},
+            {"month":"Aug",xlab: 29, ylab: 0.09},
+            {"month":"Sept",xlab: 33, ylab: 0.09},
+            {"month":"Oct",xlab: 37, ylab: 0.09},
+            {"month":"Nov",xlab: 41, ylab: 0.09},
+            {"month":"Dec",xlab: 43, ylab: 0.09}]
 
 svg.append("text")
-       .datum(monLabs)
-       .attr("x", function(d){return x(d.values)})
-       .attr("y", y([0.095,0.095,0.095,0.095,0.095,0.095,0.095,0.095,0.095,0.095,0.095,0.095]))
-       .attr("dy", ".25em")
+       .datum(xLabs)
+       .attr("x", function(d){return x(d.xlab)})
+       .attr("y", function(d){return y(d.ylab)})
+       //.attr("dy", ".25em")
+       //.attr("transform", "translate(+2,0)")
        .style("font-size", "0.6em")
-       .style("stroke","white")
-       .style("fill","white")
-       .text(function(d){return Object.keys(d)});
+       .style("stroke","none")
+       .style("fill","black")
+       .style("text-anchor","middle")
+       .text(function(d){return x(d.month)});
 
 // Bars
 svg.selectAll("mybar")
