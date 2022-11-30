@@ -158,6 +158,7 @@ Promise.all([fetch(currentAPI),
                  .attr("class", "y label")
                  .attr("text-anchor", "middle")
                  .attr("y", y(Math.floor(Math.max.apply(null,yVals)/2)))
+                 .attr("x", x(width+margin.left))
                  .attr("dy", "-20em")
                  .attr("transform", "rotate(-90)")
                  .text("Cumulative observations");

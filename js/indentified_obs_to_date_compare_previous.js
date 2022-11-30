@@ -153,10 +153,27 @@ Promise.all([fetch(currentAPI),
                  .attr("y", height + 30)
                  .text("Ordinal Day");
 
+                 function median(values){
+                   if(values.length ===0) throw new Error("No inputs");
+
+                   values.sort(function(a,b){
+                     return a-b;
+                   });
+
+                   var half = Math.floor(values.length / 2);
+
+                   if (values.length % 2)
+                     return values[half];
+
+                   return (values[half - 1] + values[half]) / 2.0;
+                 }
+
               svg.append("text")
                  .attr("class", "y label")
-                 .attr("text-anchor", "middle")
-                 .attr("y", y(Math.floor(Math.max.apply(null,yVals)/2)))
+                 .attr("text-anchor", "right")
+                 .attr("y", median(yVals))//-y(Math.floor(Math.max.apply(null,yVals)/4)))
+                 //.attr("x", x(Math.floor(Math.min.apply(0,xVals)/2))-margin.bottom)
+                 .attr("x", 0 + margin.left)
                  .attr("dy", "-20em")
                  .attr("transform", "rotate(-90)")
                  .text("Cumulative observations");
