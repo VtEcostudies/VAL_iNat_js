@@ -4,7 +4,7 @@
   //var begDate = `?d1=${getStamp(30)}`; if (init & vtOnly) {begDate = `?d1=${getDate(getDays)}`;}
   //var begDate = `?created_d1=${getStamp(3600)}` //midnight of current day
   var begDate = '&d1=2022-01-01'; //midnight of current day
-  //var endDate = '&d2=2022-01-20';
+  var endDate = '&d2=2022-12-31';
   var project = '&project_id=vermont-atlas-of-life';
   var research = '&quality_grade=research';
   var needs_id = '&quality_grade=needs_id';
@@ -12,7 +12,7 @@
 
 // API strings
 var qTotalObs = baseUrl + project;
-var qObs2022 = baseUrl + project + begDate;
+var qObs2022 = baseUrl + project + begDate + endDate;
 var qId2022 = baseUrl + project + '&updated_since=2022-01-01';
 var qNeedsID = baseUrl + project + needs_id
 var qResearch = baseUrl + project + research;
